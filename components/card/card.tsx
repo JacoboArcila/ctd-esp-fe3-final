@@ -29,7 +29,7 @@ const CardComponent: FC<Props> = ({ comic }) => {
         </CardContent>
       </Box>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-        <NextLink href={`/comics/${comic.id}`}>
+        <NextLink href={`/comic/${comic.id}`}>
           <Button size="small" variant="outlined">
             Ver detalles
           </Button>
