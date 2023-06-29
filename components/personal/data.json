@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Nombre",
+    "label": "Nombre"
+  },
+  {
+    "name": "apellido",
+    "label": "Apellido"
+  },
+  {
+    "name": "email",
+    "label": "Email"
+  }
+]

@@ -1,27 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
+import {
+  ERROR_BAD_PARAMETERS_REQUESTS,
+  ERROR_BAD_REQUEST,
+  ERROR_INVALID_CREDENTIALS,
+  ERROR_SERVER,
+} from "dh-marvel/services/comic/comic.errors";
 import { getComics } from "dh-marvel/services/marvel/marvel.service";
 import { IComicResponse } from "types";
-
-const ERROR_INVALID_CREDENTIALS = {
-  error: "INVALID_CREDENTIALS",
-  message: "Invalid credentials.",
-};
-
-const ERROR_BAD_PARAMETERS_REQUESTS = {
-  error: "BAD_PARAMETERS_REQUESTS",
-  message: "The request has invalid parameters",
-};
-
-const ERROR_SERVER = {
-  error: "SERVER_ERROR",
-  message: "Server error. Please try again in a few seconds",
-};
-
-const ERROR_BAD_REQUEST = {
-  error: "BAD_REQUEST",
-  message: "The request is incorrect",
-};
 
 type Data = IComicResponse | { error: string; message: string };
 
@@ -35,6 +20,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const query = req.query;
+
   const { offset, limit } = query as Query;
 
   const offsetInt = parseInt(offset);

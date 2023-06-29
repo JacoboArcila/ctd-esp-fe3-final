@@ -34,6 +34,11 @@ export const getComic = async (comicId: number) => {
   } else return null;
 };
 
+export const getComicsById = async (id: number): Promise<any> => {
+  const response = await fetch(`/api/comics/${id}`);
+  return await response.json();
+};
+
 export const getCharacter = async (characterId: number) => {
   const data = await fetchApi(`characters/${characterId}`);
   const results = data.data.results;
