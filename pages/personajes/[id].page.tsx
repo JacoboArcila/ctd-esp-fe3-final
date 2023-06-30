@@ -20,7 +20,7 @@ const Personajes: NextPage<Props> = ({ personaje }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "left" }}>
       <Typography variant="h3" sx={{ textAlign: "center", margin: "10px 0" }}>
-        {personaje.name}
+        {personaje?.name}
       </Typography>
       <Box sx={{ display: "flex" }}>
         <Box
@@ -35,17 +35,17 @@ const Personajes: NextPage<Props> = ({ personaje }) => {
           }}
         />
         <Typography sx={{ width: "500px", marginLeft: "20px" }}>
-          {personaje.description === "" || personaje.description === null
+          {personaje?.description === "" || personaje?.description === null
             ? "No tiene descripcion"
-            : personaje.description}
+            : personaje?.description}
         </Typography>
       </Box>
       <Typography sx={{ margin: "20px 0 -15px 0" }}>Comics:</Typography>
       <ul>
-        {personaje.comics.items.map((comic, key) => (
+        {personaje?.comics?.items.map((comic, key) => (
           <li key={key}>
             <NextLink href={`/comic/${obtenerNumeroDeURL(comic.resourceURI)}`}>
-              {comic.name}
+              {comic?.name}
             </NextLink>
           </li>
         ))}

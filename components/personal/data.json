@@ -1,14 +1,17 @@
 [
   {
-    "name": "Nombre",
-    "label": "Nombre"
+    "name": "nombre",
+    "label": "Nombre",
+    "type": "text"
   },
   {
     "name": "apellido",
-    "label": "Apellido"
+    "label": "Apellido",
+    "type": "text"
   },
   {
     "name": "email",
-    "label": "Email"
+    "label": "Email",
+    "type": "email"
   }
 ]

@@ -22,7 +22,7 @@ const Comic: NextPage<Props> = ({ comic }) => {
       <Box
         sx={{ marginBottom: "20px", display: "flex", justifyContent: "center" }}
       >
-        <Typography variant="h5">{comic.title}</Typography>
+        <Typography variant="h5">{comic?.title}</Typography>
       </Box>
       <Box
         sx={{
@@ -44,16 +44,16 @@ const Comic: NextPage<Props> = ({ comic }) => {
         <Box sx={{ marginLeft: "50px" }}>
           <Typography sx={{ width: "500px", marginBottom: "10px" }}>
             <strong>Descripcion:</strong> <br />
-            {comic.description === "" || comic.description === null
+            {comic?.description === "" || comic?.description === null
               ? TEXT
-              : comic.description}
+              : comic?.description}
           </Typography>
           <Typography>
-            <strong>Old price:</strong> {comic.oldPrice}
+            <strong>Old price:</strong> {comic?.oldPrice}
           </Typography>
           <Typography>
             <strong>Price: </strong>
-            {comic.price}
+            {comic?.price}
           </Typography>
           <Box
             sx={{
@@ -67,7 +67,7 @@ const Comic: NextPage<Props> = ({ comic }) => {
               href={{ pathname: "/checkout/", query: `comic=${comic?.id}` }}
             >
               <Button
-                disabled={comic.stock === 0 ? true : false}
+                disabled={comic?.stock === 0 ? true : false}
                 variant="contained"
               >
                 Comprar
@@ -75,7 +75,7 @@ const Comic: NextPage<Props> = ({ comic }) => {
             </NextLink>
             <Typography>
               {" "}
-              {comic.stock === 0 ? "Sin Stock" : `Stock: ${comic.stock}`}
+              {comic?.stock === 0 ? "Sin Stock" : `Stock: ${comic?.stock}`}
             </Typography>
           </Box>
         </Box>
@@ -83,14 +83,14 @@ const Comic: NextPage<Props> = ({ comic }) => {
       <Box>
         <Typography sx={{ margin: "20px 0 -15px 0" }}>Personajes:</Typography>
         <ul>
-          {comic.characters.items.map((character, key) => (
+          {comic?.characters?.items.map((character, key) => (
             <li key={key}>
               <NextLink
                 href={`/personajes/${obtenerNumeroDeURL(
                   character?.resourceURI
                 )}`}
               >
-                {character.name}
+                {character?.name}
               </NextLink>
             </li>
           ))}

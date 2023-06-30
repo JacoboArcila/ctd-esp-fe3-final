@@ -73,8 +73,15 @@ export default function HorizontalLinearStepper({
       ) : (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-          {/*  {activeStep === 0 ? <Personal /> : null} */}
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          {activeStep === 0 ? (
+            <Personal
+              handleNext={handleNext}
+              activeStep={activeStep}
+              steps={steps}
+            />
+          ) : null}
+
+          {/*  <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
               disabled={activeStep === 0}
@@ -87,7 +94,7 @@ export default function HorizontalLinearStepper({
             <Button onClick={handleNext}>
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
-          </Box>
+          </Box> */}
         </React.Fragment>
       )}
     </Box>
