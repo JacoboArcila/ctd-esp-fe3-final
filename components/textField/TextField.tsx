@@ -1,23 +1,19 @@
 import React from "react";
+import { Box, IconButton, TextField } from "@mui/material";
+import { FC, useState } from "react";
+import { useController, useFormContext } from "react-hook-form";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-const TextField = () => {
+const TextFieldComponent = () => {
+
   return (
     <div>
       <h1>Text field</h1>
       <TextField
-        onChange={onChange}
-        value={inputValue(value)}
-        label={label}
-        name={name}
-        inputRef={ref}
-        type={showPassword ? "text" : type}
-        inputProps={{ maxLength: maxLength }}
-        fullWidth
-        error={!!errors[name]}
-        helperText={`${errors[name]?.message || ""}`}
       />
     </div>
   );
 };
 
-export default TextField;
+export default TextFieldComponent;

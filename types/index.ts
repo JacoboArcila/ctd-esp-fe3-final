@@ -138,15 +138,15 @@ export interface ITextObjects {
 
 export type ICheckout = {
   customer: ICustomer;
-  card: ICard;
-  order: IOrder;
+  address: IAddress;
+  payment: ICard;
 };
 
 export interface ICard {
   number: string;
-  cvc: string;
-  expDate: string;
   nameOnCard: string;
+  expDate: string;
+  cvc: string;
 }
 
 export interface IOrder {
@@ -156,10 +156,9 @@ export interface IOrder {
 }
 
 export interface IAddress {
-  address1: string;
-  address2: string | null;
+  address: string;
   city: string;
-  state: string;
+  provincia: string;
   zipCode: string;
 }
 
@@ -167,5 +166,4 @@ export interface ICustomer {
   name: string;
   lastname: string;
   email: string;
-  address: IAddress;
 }

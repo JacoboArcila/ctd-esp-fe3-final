@@ -1,11 +1,30 @@
 import * as React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Personal from "../personal/Personal";
+import { ICheckout } from "types";
+
+const info: ICheckout = {
+  customer: {
+    name: "",
+    lastname: "",
+    email: "",
+  },
+  address: {
+    address: "",
+    city: "",
+    provincia: "",
+    zipCode: "",
+  },
+  payment: {
+    number: "",
+    nameOnCard: "",
+    expDate: "",
+    cvc: "",
+  },
+};
 
 export default function HorizontalLinearStepper({
   activeStep,
@@ -14,6 +33,8 @@ export default function HorizontalLinearStepper({
   setSkipped,
   steps,
 }: any) {
+  const [data, setData] = useState<ICheckout>(info);
+
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
   };
@@ -52,7 +73,7 @@ export default function HorizontalLinearStepper({
       ) : (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-          {activeStep === 0 ? <Personal /> : null}
+          {/*  {activeStep === 0 ? <Personal /> : null} */}
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"

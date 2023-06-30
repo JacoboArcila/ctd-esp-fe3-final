@@ -3,13 +3,18 @@ import data from "./data.json";
 import { Stack, TextField, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { ICheckout } from "types";
 
 type FormValues = {
   email: string;
   password: string;
 };
 
-const Personal = () => {
+type Props = {
+  setData: React.Dispatch<React.SetStateAction<ICheckout>>;
+};
+
+const Personal: React.FC<Props> = () => {
   const form = useForm<FormValues>({
     defaultValues: {
       email: "",
