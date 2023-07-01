@@ -156,9 +156,10 @@ export interface IOrder {
 }
 
 export interface IAddress {
-  address: string;
+  address1: string;
+  address2: string | null;
   city: string;
-  provincia: string;
+  state: string;
   zipCode: string;
 }
 

@@ -27,7 +27,6 @@ const Checkout = () => {
           const response = await fetch(`/api/comics/${id}`);
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
             setData(data);
           } else {
             throw new Error("Error al obtener los datos");
@@ -49,11 +48,12 @@ const Checkout = () => {
     skipped,
     setSkipped,
     steps,
+    data,
   };
 
   return (
     <Box>
-      <Box>
+      <Box sx={{ margin: "30px 0 20px 0" }}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
             const stepProps: { completed?: boolean } = {};

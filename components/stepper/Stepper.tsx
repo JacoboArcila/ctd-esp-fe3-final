@@ -1,10 +1,14 @@
 import * as React from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Personal from "../personal/Personal";
-import { ICheckout } from "types";
+import { ICard, ICheckout } from "types";
+import Address from "../address/Address";
+import Details from "../details/Details";
+import { fetchCheckout } from "dh-marvel/services/checkout/checkout.service";
+import { useRouter } from "next/router";
+import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
 
 const info: ICheckout = {
   customer: {
@@ -13,9 +17,10 @@ const info: ICheckout = {
     email: "",
   },
   address: {
-    address: "",
+    address1: "",
+    address2: null,
     city: "",
-    provincia: "",
+    state: "",
     zipCode: "",
   },
   payment: {
@@ -31,9 +36,10 @@ export default function HorizontalLinearStepper({
   setActiveStep,
   skipped,
   setSkipped,
-  steps,
+  data: comic,
 }: any) {
   const [data, setData] = useState<ICheckout>(info);
+  const router = useRouter();
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -54,49 +60,74 @@ export default function HorizontalLinearStepper({
     setActiveStep((prevActiveStep: any) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleChangeOptions = (datos: any, value: string) => {
+    setData((prevState) => ({
+      ...prevState,
+      [value]: datos,
+    }));
+  };
+
+  const handlePayment = (datos: ICard) => {
+    const info: CheckoutInput = {
+      customer: {
+        ...data.customer,
+        address: data.address,
+      },
+      card: datos,
+      order: {
+        name: comic?.title,
+        image: `${comic?.thumbnail.path}.${comic?.thumbnail.extension}`,
+        price: comic?.price,
+      },
+    };
+
+    const response = fetchCheckout(info);
+    response.then((response) => {
+      console.log(
+        "🚀 ~ file: Stepper.tsx:105 ~ response.then ~ response:",
+        response
+      );
+      if (!response?.data) {
+        return;
+      } else {
+        const customer = response.data.customer;
+        const order = response.data.order;
+
+        localStorage.setItem(
+          "checkoutData",
+          JSON.stringify({
+            customer: customer,
+            order: order,
+          })
+        );
+        router.push({
+          pathname: "/confirmacion-compra",
+        });
+      }
+    });
+  };
+
+  const props = {
+    handleChangeOptions,
+    handleNext,
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-          {activeStep === 0 ? (
-            <Personal
-              handleNext={handleNext}
-              activeStep={activeStep}
-              steps={steps}
-            />
-          ) : null}
-
-          {/*  <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </Button>
-          </Box> */}
-        </React.Fragment>
-      )}
+      {activeStep === 0 ? (
+        <Personal {...props} customer={data.customer} />
+      ) : null}
+      {activeStep === 1 ? (
+        <Address handleBack={handleBack} address={data.address} {...props} />
+      ) : null}
+      {activeStep === 2 ? (
+        <Details
+          handleBack={handleBack}
+          payment={data.payment}
+          handlePayment={handlePayment}
+          {...props}
+        />
+      ) : null}
     </Box>
   );
 }

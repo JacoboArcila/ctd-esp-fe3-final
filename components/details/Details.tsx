@@ -2,37 +2,34 @@ import React from "react";
 import data from "./data.json";
 import { Stack, TextField, Button } from "@mui/material";
 import { DevTool } from "@hookform/devtools";
-import { ICheckout, ICustomer } from "types";
+import { IAddress, ICard, ICheckout, ICustomer } from "types";
 import Box from "@mui/material/Box";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 
 type Props = {
-  handleNext: () => void;
+  handleBack: () => void;
   handleChangeOptions: (datos: any, value: string) => void;
-  customer: ICustomer;
+  payment: ICard;
+  handlePayment: (datos: ICard) => void;
 };
 
-interface ICustomerPersonal {
-  nombre: string;
-  apellido: string;
-  email: string;
-}
-
-const Personal: React.FC<Props> = ({
-  handleNext,
-  customer,
+const Details: React.FC<Props> = ({
   handleChangeOptions,
+  handleBack,
+  handlePayment,
+  payment,
 }: Props) => {
   const shema = yup
     .object({
-      nombre: yup.string().required("El nombre es obligatorio"),
-      apellido: yup.string().required("El apellido es obligario"),
-      email: yup
+      cvc: yup.string().required("El CVC es obligario"),
+      expDate: yup.string().required("La fecha es obligaria"),
+      nameOnCard: yup.string().required("El nombre es obligario"),
+      number: yup
         .string()
-        .email("No es un email")
-        .required("El email es obligario"),
+        .required("El numero es obligatorio")
+        .max(16, "No puede superar los 16 caracteres"),
     })
     .required();
 
@@ -47,8 +44,8 @@ const Personal: React.FC<Props> = ({
   });
 
   const onSubmit = (data: FormData) => {
-    handleChangeOptions(data, "customer");
-    handleNext();
+    handleChangeOptions(data, "payment");
+    handlePayment(data);
   };
 
   return (
@@ -59,8 +56,8 @@ const Personal: React.FC<Props> = ({
             <Controller
               key={key}
               name={item.name as keyof FormData}
-              defaultValue={customer[item.name as keyof ICustomer] || ""}
               control={control}
+              defaultValue={payment[item.name as keyof FormData] || ""}
               render={({ field }) => (
                 <TextField
                   variant="outlined"
@@ -68,7 +65,7 @@ const Personal: React.FC<Props> = ({
                   label={item.label}
                   error={!!errors[item.name as keyof boolean] || false}
                   helperText={
-                    errors[item.name as keyof ICustomerPersonal]?.message || ""
+                    errors[item.name as keyof FormData]?.message || ""
                   }
                   {...field}
                 />
@@ -77,8 +74,11 @@ const Personal: React.FC<Props> = ({
           ))}
         </Stack>
         <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
+            Atras
+          </Button>
           <Box sx={{ flex: "1 1 auto" }} />
-          <Button type="submit">Siguiente</Button>
+          <Button type="submit">Pagar</Button>
         </Box>
       </form>
 
@@ -87,4 +87,4 @@ const Personal: React.FC<Props> = ({
   );
 };
 
-export default Personal;
+export default Details;

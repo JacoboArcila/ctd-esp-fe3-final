@@ -2,37 +2,33 @@ import React from "react";
 import data from "./data.json";
 import { Stack, TextField, Button } from "@mui/material";
 import { DevTool } from "@hookform/devtools";
-import { ICheckout, ICustomer } from "types";
+import { IAddress } from "types";
 import Box from "@mui/material/Box";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
+import { isNullOrUndefined } from "util";
 
 type Props = {
   handleNext: () => void;
+  handleBack: () => void;
   handleChangeOptions: (datos: any, value: string) => void;
-  customer: ICustomer;
+  address: IAddress;
 };
 
-interface ICustomerPersonal {
-  nombre: string;
-  apellido: string;
-  email: string;
-}
-
-const Personal: React.FC<Props> = ({
+const Address: React.FC<Props> = ({
   handleNext,
-  customer,
+  handleBack,
   handleChangeOptions,
+  address,
 }: Props) => {
   const shema = yup
     .object({
-      nombre: yup.string().required("El nombre es obligatorio"),
-      apellido: yup.string().required("El apellido es obligario"),
-      email: yup
-        .string()
-        .email("No es un email")
-        .required("El email es obligario"),
+      address1: yup.string().required("La direccion es obligatoria"),
+      address2: yup.string().required("La direccion es obligatoria"),
+      city: yup.string().required("La ciudad es obligaria"),
+      state: yup.string().required("La provincia es obligaria"),
+      zipCode: yup.string().required("El Codigo postal es obligario"),
     })
     .required();
 
@@ -47,7 +43,7 @@ const Personal: React.FC<Props> = ({
   });
 
   const onSubmit = (data: FormData) => {
-    handleChangeOptions(data, "customer");
+    handleChangeOptions(data, "address");
     handleNext();
   };
 
@@ -59,8 +55,8 @@ const Personal: React.FC<Props> = ({
             <Controller
               key={key}
               name={item.name as keyof FormData}
-              defaultValue={customer[item.name as keyof ICustomer] || ""}
               control={control}
+              defaultValue={address[item.name as keyof IAddress] || ""}
               render={({ field }) => (
                 <TextField
                   variant="outlined"
@@ -68,7 +64,7 @@ const Personal: React.FC<Props> = ({
                   label={item.label}
                   error={!!errors[item.name as keyof boolean] || false}
                   helperText={
-                    errors[item.name as keyof ICustomerPersonal]?.message || ""
+                    errors[item.name as keyof IAddress]?.message || ""
                   }
                   {...field}
                 />
@@ -77,6 +73,9 @@ const Personal: React.FC<Props> = ({
           ))}
         </Stack>
         <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
+            Atras
+          </Button>
           <Box sx={{ flex: "1 1 auto" }} />
           <Button type="submit">Siguiente</Button>
         </Box>
@@ -87,4 +86,4 @@ const Personal: React.FC<Props> = ({
   );
 };
 
-export default Personal;
+export default Address;

@@ -8,7 +8,7 @@ type Props = {
 
 const Payment = ({ comic }: Props) => {
   return (
-    <Box>
+    <Box sx={{ margin: "0 30px" }}>
       <Typography variant="h4">{comic?.title}</Typography>
       <Box
         component="img"
